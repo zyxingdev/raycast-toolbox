@@ -46,4 +46,8 @@ mv "$TEMP_DIR/native-bridge" "$OUTPUT"
 swift -module-cache-path "$TEMP_DIR/icon-module-cache" \
   "$ROOT_DIR/native/build-icon.swift" "$ASSET_DIR/extension-icon.png"
 
+# NSImage can render a 512-point canvas as a 1024-pixel Retina bitmap.
+# Raycast validates the PNG's pixel dimensions, so normalize the output.
+sips -z 512 512 "$ASSET_DIR/extension-icon.png" >/dev/null
+
 echo "Built universal native bridge for: $ARCHS"
